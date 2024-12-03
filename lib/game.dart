@@ -1,3 +1,4 @@
+import 'package:flutter/src/painting/text_style.dart';
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -5,16 +6,21 @@ import 'package:flame/palette.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:mini_games/buah.dart';
 import 'package:mini_games/player.dart';
-import 'package:flutter/src/painting/text_style.dart';
+import 'package:flutter/material.dart'; 
 import 'constant.dart';
+import 'package:mini_games/mainmenu.dart'; 
 
 class CatchGame extends FlameGame with HasCollisionDetection {
   SpriteComponent bg = SpriteComponent();
   int score = 0;
-  int life = 3; // Nyawa
-  int missedFruits = 0; // Menghitung buah yang terlewat
-  Player player = Player();  late TextComponent scoreText;
-  late List<SpriteComponent> lifeIcons; // Daftar ikon nyawa
+  int life = 3; 
+  int missedFruits = 0; 
+  Player player = Player();
+  late TextComponent scoreText;
+  late List<SpriteComponent> lifeIcons; 
+  late BuildContext context; 
+
+  CatchGame(this.context); 
 
   @override
   Future<void> onLoad() async {
@@ -40,9 +46,9 @@ class CatchGame extends FlameGame with HasCollisionDetection {
     for (int i = 0; i < life; i++) {
       lifeIcons.add(
         SpriteComponent()
-          ..sprite = await loadSprite(Global.lifeImg) // Gambar ikon life
+          ..sprite = await loadSprite(Global.lifeImg) 
           ..size = Vector2(30, 30)
-          ..position = Vector2(size.x - (i + 1) * 40, 50), // Posisi di kanan atas
+          ..position = Vector2(size.x - (i + 1) * 40, 50), 
       );
       add(lifeIcons[i]);
     }
@@ -53,11 +59,33 @@ class CatchGame extends FlameGame with HasCollisionDetection {
     super.update(dt);
     scoreText.text = 'Score: $score';
 
-    // Jika nyawa habis, tampilkan pesan Game Over
+    // Jika nyawa habis, tampilkan pesan Game Over dan kembali ke MainMenu
     if (life <= 0) {
       FlameAudio.bgm.stop();
-      add(TextComponent(
-          text: 'Game Over', position: Vector2(size.x / 2 - 50, size.y / 2)));
+
+      // Menampilkan pesan Game Over di tengah
+      var gameOverText = TextComponent(
+        text: 'Game Over',
+        position: Vector2(size.x / 2 - 100, size.y / 2 - 50), // Menempatkan Game Over di tengah
+        textRenderer: TextPaint(style: TextStyle(color: Colors.red, fontSize: 40)),
+      );
+      add(gameOverText);
+
+      // Menampilkan score akhir di bawah Game Over, sejajar dengan Game Over
+      var finalScoreText = TextComponent(
+        text: 'Final Score: $score',
+        position: Vector2(size.x / 2 - 100, size.y / 2 + 10), // Posisi di bawah Game Over
+        textRenderer: TextPaint(style: TextStyle(color: Colors.white, fontSize: 30)),
+      );
+      add(finalScoreText);
+
+      // Navigasi kembali ke MainMenu
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainMenu()),
+        );
+      });
     }
   }
 
@@ -65,12 +93,12 @@ class CatchGame extends FlameGame with HasCollisionDetection {
   void reduceLife() {
     if (life > 0) {
       life--;
-      missedFruits++; // Menambah jumlah buah yang terlewat
+      missedFruits++; 
 
       if (missedFruits <= 3 && lifeIcons.isNotEmpty) {
         // Menghapus life terakhir
         lifeIcons.last.removeFromParent();
-        lifeIcons.removeLast(); // Hapus ikon life terakhir dari daftar
+        lifeIcons.removeLast(); 
       }
 
       if (missedFruits >= 3) {
@@ -81,11 +109,32 @@ class CatchGame extends FlameGame with HasCollisionDetection {
     // Jika nyawa habis, tampilkan pesan Game Over
     if (life <= 0) {
       FlameAudio.bgm.stop();
-      add(TextComponent(
-          text: 'Game Over', position: Vector2(size.x / 2 - 50, size.y / 2)));
+
+      // Menampilkan pesan Game Over di tengah
+      var gameOverText = TextComponent(
+        text: 'Game Over',
+        position: Vector2(size.x / 2 - 100, size.y / 2 - 50), // Menempatkan Game Over di tengah
+        textRenderer: TextPaint(style: TextStyle(color: Colors.red, fontSize: 40)),
+      );
+      add(gameOverText);
+
+      // Menampilkan score akhir di bawah Game Over, sejajar dengan Game Over
+      var finalScoreText = TextComponent(
+        text: 'Final Score: $score',
+        position: Vector2(size.x / 2 - 100, size.y / 2 + 10), // Posisi di bawah Game Over
+        textRenderer: TextPaint(style: TextStyle(color: Colors.white, fontSize: 30)),
+      );
+      add(finalScoreText);
+
+      // Navigasi kembali ke MainMenu
+      Future.delayed(Duration(seconds: 5), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainMenu()),
+        );
+      });
     }
   }
-  
 
   @override
   void render(Canvas canvas) {

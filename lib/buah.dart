@@ -11,9 +11,9 @@ import 'constant.dart';
 
 class Buah extends SpriteComponent
     with HasGameRef<CatchGame>, CollisionCallbacks {
-  double speed = 350;
+  double speed = 400;
   Random random = Random();
-  bool isCaught = false; // Menandakan apakah buah sudah tertangkap
+  bool isCaught = false; 
 
   @override
   FutureOr<void> onLoad() async {
@@ -57,7 +57,6 @@ class Buah extends SpriteComponent
   void update(double dt) {
     super.update(dt);
 
-    // Pastikan tidak ada update jika game sudah berakhir
     if ((gameRef as CatchGame).life <= 0) {
       return; // Jangan update buah jika game sudah berakhir
     }
@@ -66,10 +65,10 @@ class Buah extends SpriteComponent
 
     // Jika buah jatuh ke bawah tanpa tertangkap, kurangi nyawa
     if (position.y > gameRef.size.y && !isCaught) {
-      FlameAudio.play('uh.mp3'); // Memutar suara 'uh.mp3' saat buah jatuh
-      (gameRef as CatchGame).reduceLife(); // Panggil fungsi reduceLife untuk mengurangi nyawa
-      removeFromParent(); // Hapus buah yang jatuh
-      gameRef.add(Buah()); // Tambahkan buah baru
+      FlameAudio.play('Click.wav'); 
+      (gameRef as CatchGame).reduceLife(); 
+      removeFromParent(); 
+      gameRef.add(Buah()); 
     }
   }
 
@@ -80,9 +79,9 @@ class Buah extends SpriteComponent
     if (other is Player && !isCaught) {
       gameRef.score += 10; // Menambah skor ketika buah tertangkap
       FlameAudio.play('Catch.mp3');
-      isCaught = true; // Menandakan buah sudah tertangkap
-      position.y = gameRef.size.y + 20; // Menyembunyikan buah yang tertangkap di bawah layar
-      gameRef.add(Buah()); // Menambahkan buah baru setelah tertangkap
+      isCaught = true; 
+      position.y = gameRef.size.y + 20; 
+      gameRef.add(Buah()); 
     }
   }
 }

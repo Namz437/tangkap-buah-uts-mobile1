@@ -1,74 +1,72 @@
-import 'package:flutter/material.dart';
-import 'package:mini_games/game.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/game.dart';
-import 'package:flame_audio/flame_audio.dart'; // Untuk menambahkan suara
+import 'package:flutter/material.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:mini_games/game.dart';
 import 'package:mini_games/rules.dart';
+import 'login.dart'; 
 
 class MainMenu extends StatelessWidget {
-  // Fungsi untuk memainkan suara klik
   void _playClickSound() {
-    FlameAudio.play('Click.wav'); // Memainkan suara klik
+    FlameAudio.play('Click.wav');
   }
 
   @override
   Widget build(BuildContext context) {
-    // Memainkan suara latar belakang (background music) saat menu muncul
+    // bg menu musik
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      FlameAudio.bgm.play('Menu.mp3');  // Memainkan suara latar
+      FlameAudio.bgm.play('Menu.mp3');
     });
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background menu
           Positioned.fill(
             child: Image.asset(
-              'assets/images/menu.jpg', 
+              'assets/images/menu.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          // Menampilkan GIF dev.gif di atas tombol Start
           Positioned(
-            top: 100,  // Posisi di atas tombol
+            top: 100,
             left: 50,
             right: 50,
             child: Image.asset(
-              'assets/images/dev.gif',  // Menampilkan GIF dev
-              width: 200,  // Ukuran GIF dev
+              'assets/images/dev.gif',
+              width: 200,
               height: 200,
             ),
           ),
-          // Menampilkan GIF game.gif di bawah dev.gif dengan sedikit jarak
           Positioned(
-            top: 180,  // Posisi di bawah dev.gif
+            top: 180,
             left: 50,
             right: 50,
             child: Image.asset(
-              'assets/images/game.gif',  // Menampilkan GIF game
-              width: 200,  // Ukuran GIF game
+              'assets/images/game.gif',
+              width: 200,
               height: 200,
             ),
           ),
-          // Tombol Start dengan gambar
           Positioned(
-            bottom: 180,
+            bottom: 320,
             left: 50,
             right: 50,
             child: GestureDetector(
               onTap: () {
-                _playClickSound(); // Memainkan suara klik
-                // Navigasi ke halaman game
+                _playClickSound();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => GameWidget(game: CatchGame())),
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      body: GameWidget(game: CatchGame(context)),
+                    ),
+                  ),
                 );
               },
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  // Gambar tombol Start
                   Image.asset('assets/images/start.png', width: 200, height: 80),
-                  // Teks di atas gambar tombol
                   Positioned(
                     child: Text(
                       'START GAME',
@@ -83,14 +81,52 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
-          // Menambahkan gambar rules.png di pojok kanan bawah
           Positioned(
-            bottom: 20,  // Posisi dari bawah
-            right: 20,   // Posisi dari kanan
+            bottom: 220,
+            left: 50,
+            right: 50,
             child: GestureDetector(
               onTap: () {
-                _playClickSound(); // Memainkan suara klik saat mengklik gambar rules
-                // Navigasi ke halaman RulesPage
+                _playClickSound();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(title: Text('Top Score')),
+                      body: Center(
+                        child: Text(
+                          'Halaman Top Score belum dibuat.',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.asset('assets/images/start.png', width: 200, height: 80),
+                  Positioned(
+                    child: Text(
+                      'TOP SCORE',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
+                _playClickSound();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => RulesPage()),
@@ -98,7 +134,31 @@ class MainMenu extends StatelessWidget {
               },
               child: Image.asset(
                 'assets/images/rules.png',
-                width: 60,  // Ukuran gambar rules
+                width: 60,
+                height: 60,
+              ),
+            ),
+          ),
+          // Tombol Back di kiri bawah
+          Positioned(
+            bottom: 20,
+            left: 20,
+            child: GestureDetector(
+              onTap: () async {
+                _playClickSound();
+                // Trigger logout melalui FirebaseAuth
+                await FirebaseAuth.instance.signOut();
+                // Setelah logout, matikan musik
+                FlameAudio.bgm.stop();
+                // Setelah logout, arahkan ke halaman login
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()), // Ganti dengan halaman login Anda
+                );
+              },
+              child: Image.asset(
+                'assets/images/back.png',
+                width: 60,
                 height: 60,
               ),
             ),

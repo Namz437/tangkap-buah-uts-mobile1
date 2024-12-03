@@ -38,20 +38,20 @@ class Player extends SpriteComponent with HasGameRef<CatchGame>, CollisionCallba
   void update(double dt) {
     super.update(dt);
 
-    // Menggerakkan player sesuai dengan joystick
+    // Menggerakkan player dengan joystick
     position += joystick.relativeDelta * speed * dt;
 
     // Membatasi posisi pemain agar tidak keluar dari batas layar
     if (position.x < width / 2) {
-      position.x = width / 2; // Batas kiri
+      position.x = width / 2; 
     } else if (position.x > gameRef.size.x - width / 2) {
-      position.x = gameRef.size.x - width / 2; // Batas kanan
+      position.x = gameRef.size.x - width / 2; 
     }
 
     if (position.y < height / 2) {
-      position.y = height / 2; // Batas atas
+      position.y = height / 2; 
     } else if (position.y > gameRef.size.y - height / 2) {
-      position.y = gameRef.size.y - height / 2; // Batas bawah
+      position.y = gameRef.size.y - height / 2; 
     }
   }
 

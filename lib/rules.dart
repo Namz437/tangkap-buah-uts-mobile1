@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flame_audio/flame_audio.dart'; // Untuk menambahkan suara
+import 'package:flame_audio/flame_audio.dart'; 
 
 class RulesPage extends StatelessWidget {
-  // Fungsi untuk memainkan suara klik
   void _playClickSound() {
-    FlameAudio.play('Click.wav'); // Memainkan suara klik
+    FlameAudio.play('Click.wav'); 
   }
 
   @override
@@ -12,20 +11,18 @@ class RulesPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background yang sama dengan menu utama
           Positioned.fill(
             child: Image.asset(
               'assets/images/menu.jpg',
               fit: BoxFit.cover,
             ),
           ),
-          // Menambahkan Card yang berisi peraturan permainan
           Positioned(
             top: 100,
             left: 30,
             right: 30,
             child: Card(
-              color: Colors.white.withOpacity(0.8), // Warna kartu dengan transparansi
+              color: Colors.white.withOpacity(0.8), 
               elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -35,7 +32,6 @@ class RulesPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Judul kartu
                     Text(
                       'Cara Main',
                       style: TextStyle(
@@ -45,7 +41,6 @@ class RulesPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    // Teks peraturan permainan
                     Text(
                       '• Ambil semua buah, hindari buah jatuh\n'
                       '• Cetak score tertinggi\n'
@@ -60,19 +55,18 @@ class RulesPage extends StatelessWidget {
               ),
             ),
           ),
-          // Tombol kembali ke menu utama menggunakan gambar back.png
           Positioned(
             bottom: 30,
             left: 30,
             child: GestureDetector(
               onTap: () {
-                _playClickSound(); // Memainkan suara klik
-                // Navigasi kembali ke halaman utama
+                _playClickSound(); 
+                
                 Navigator.pop(context);
               },
               child: Image.asset(
-                'assets/images/back.png',  // Gambar untuk tombol kembali
-                width: 60,  // Ukuran gambar back
+                'assets/images/back.png',  
+                width: 60, 
                 height: 60,
               ),
             ),

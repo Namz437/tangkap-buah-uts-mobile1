@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "882781148594",
+    "project_id": "minigames-uts",
+    "storage_bucket": "minigames-uts.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882781148594:android:28f7018e3bd314de2480ab",
+        "android_client_info": {
+          "package_name": "com.minigames.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEc7j9sxyEBymCzza9wwcfbmOhmltjzm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
